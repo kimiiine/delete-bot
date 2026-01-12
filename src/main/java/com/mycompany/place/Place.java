@@ -21,7 +21,11 @@ public class Place extends TelegramLongPollingBot {
     // Only work in these groups
     if (chatId.equals(-1002800500560L) || //coop 
         chatId.equals(-1002717991742L) || //test
-        chatId.equals(-1002970524076L)) { //main
+        chatId.equals(-1002970524076L)) || // main5
+        chatId.equals(-1003559659719L)) || // main6
+
+    
+    { 
 
         Message msg = update.getMessage();
             
