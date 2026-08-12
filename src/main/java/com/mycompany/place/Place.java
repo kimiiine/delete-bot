@@ -19,27 +19,21 @@ public class Place extends TelegramLongPollingBot {
     Long chatId = update.getMessage().getChatId();
 
     // Only work in these groups
-    if (chatId.equals(-1002800500560L) || //coop 
-        chatId.equals(-1002717991742L) || //test
-        chatId.equals(-1002970524076L) || // main5
-        chatId.equals(-1003559659719L))  // main6
-
-    
-    { 
+    if (ALLOWED_CHAT_IDS.contains(chatId)) { 
 
         Message msg = update.getMessage();
             
             // Log all messages for debugging
-            System.out.println("📨 Message received in chat: " + msg.getChatId());
+            System.out.println("Message received in chat: " + msg.getChatId());
             
             // New member joined
             if (msg.getNewChatMembers() != null && !msg.getNewChatMembers().isEmpty()) {
-                System.out.println("🎉 New member(s) joined - deleting message");
+                System.out.println("New member(s) joined - deleting message");
                 deleteMessage(msg);
             }
             // Member left
             else if (msg.getLeftChatMember() != null) {
-                System.out.println("👋 Member left - deleting message");
+                System.out.println("Member left - deleting message");
                 deleteMessage(msg);
             }
         }
@@ -52,12 +46,12 @@ public class Place extends TelegramLongPollingBot {
         
         try {
             execute(delete);
-            System.out.println("✅ Successfully deleted join/leave message!");
+            System.out.println("Successfully deleted join/leave message!");
         } catch (TelegramApiException e) {
-            System.err.println("❌ Failed to delete message: " + e.getMessage());
+            System.err.println("Failed to delete message: " + e.getMessage());
             
             if (e.getMessage().contains("not enough rights")) {
-                System.err.println("💡 Make sure bot is admin with 'Delete messages' permission");
+                System.err.println("Make sure bot is admin with 'Delete messages' permission");
             }
         }
     }
@@ -74,7 +68,7 @@ public class Place extends TelegramLongPollingBot {
 
         // STEP 1: Use the environment variable BOT_TOKEN
     if (!isValidTokenFormat(BOT_TOKEN)) {
-        System.err.println("❌ INVALID TOKEN FORMAT!");
+        System.err.println("INVALID TOKEN FORMAT!");
         System.err.println("Expected format: 1234567890:ABCdefGhIjKlMnOpQrStUvWxYz1234567890");
         System.err.println("Your token: " + BOT_TOKEN);
         System.err.println("Go to @BotFather and get a new token!");
