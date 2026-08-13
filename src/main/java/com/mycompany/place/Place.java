@@ -6,10 +6,34 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Place extends TelegramLongPollingBot {
 
     private final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private final String BOT_USERNAME = System.getenv("BOT_USERNAME");
+
+    private final Set<Long> ALLOWED_CHAT_IDS = loadAllowedChatIds();
+
+    private Set<Long> loadAllowedChatIds() {
+        Set<Long> ids = new HashSet<>();
+        String envVars = System.getenv("ALLOWED_CHAT_IDS");
+        
+        if (envVars != null && !envVars.trim().isEmpty()) {
+            String[] splitIds = envVars.split(",");
+            for (String id : splitIds) {
+                try {
+                    ids.add(Long.parseLong(id.trim()));
+                } catch (NumberFormatException e) {
+                    System.err.println("Invalid chat ID in environment variable: " + id);
+                }
+            }
+        } else {
+            System.err.println("ALLOWED_CHAT_IDS environment variable is missing or empty!");
+        }
+        return ids;
+    }
     
     @Override
     public void onUpdateReceived(Update update) {
