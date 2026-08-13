@@ -17,6 +17,8 @@ public class Place extends TelegramLongPollingBot {
 
         if (update.hasMessage()) {
     Long chatId = update.getMessage().getChatId();
+            
+        System.out.println("**************** Detected Chat ID: " + chatId);
 
     // Only work in these groups
     if (ALLOWED_CHAT_IDS.contains(chatId)) { 
